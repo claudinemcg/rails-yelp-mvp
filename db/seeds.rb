@@ -5,12 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+puts "destroy old database"
+Restaurant.destroy_all # if Rails.env.development?
 puts "creating database"
 
 10.times do
   Restaurant.create(
     name: Faker::Restaurant.name,
-    address: Faker::Address.street_address
+    address: Faker::Address.street_address,
+    category: "french"
   )
   puts "restaurant created"
 end

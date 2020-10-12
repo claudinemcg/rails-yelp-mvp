@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
 
-  before_action :find_restaurant # don't need only as it's used in both methods
+  before_action :find_restaurant, except: [:destroy]# don't need only as it's used in both methods
 
   def new
     @review = Review.new
@@ -8,9 +8,18 @@ class ReviewsController < ApplicationController
 
   def create
     @review = Review.new(review_params)
-    @review.restaurant = @restaurant # review belongs to a restaurant
-    @review.save
-    redirect_to restaurant_path(@restaurant.id)
+    @review.restaurant = @restaurant # the review belongs to a restaurant
+    if @review.save # it will only save if the rating and content are there (validates in model)
+      redirect_to restaurant_path(@restaurant.id)
+    else # so if the rating and content aren't there it will go to the instance of this
+      render :new # render html, new page which is my form
+    end
+  end
+
+  def destroy
+    @review = Review.find(params[:id])
+    @review.destroy
+    redirect_to restaurant_path(@review.restaurant)
   end
 
   private

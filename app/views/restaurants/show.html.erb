@@ -1,0 +1,17 @@
+<h1> <%= @restaurant.name %></h1>
+<p> <%= @restaurant.address %> </p>
+
+<% @restaurant.reviews.each do |review| %>
+  <!-- can use @restaurant.reviews because we have has_many reviews in restaurant model -->
+ <p> <%= review.rating %></p>
+ <br>
+ <p><%= review.content %></p>
+ <%= link_to "Delete Review", review_path(review), method: :delete  %> <br>
+  <hr>
+<% end %>
+
+<br>
+<br>
+<%= link_to "Back to Restaurants", restaurants_path  %> <br>
+
+<%= link_to "Add a Review", new_restaurant_review_path(@restaurant) %>
